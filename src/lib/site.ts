@@ -49,6 +49,7 @@ export const NETWORK = [
 export const NAV = [
   { href: '/', label: 'Home', cmd: '~' },
   { href: '/roadmap/', label: 'Roadmap', cmd: 'map' },
+  { href: '/courses/', label: 'Courses', cmd: 'run' },
   { href: '/cheatsheets/', label: 'Cheatsheets', cmd: 'find' },
   { href: '/glossary/', label: 'Glossary', cmd: 'grep' },
   { href: '/about/', label: 'About', cmd: 'whoami' },
