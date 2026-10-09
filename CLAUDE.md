@@ -10,19 +10,28 @@ pentesting education, full stop, for now. `/cheatsheets/` is the free
 quick-reference PDF library (migrated over from `zephryx.in` so all study
 material lives on this domain).
 
-A structured course catalog (`/tracks/`, the `COURSES` array in `site.ts`,
-a "Courses" nav entry) existed briefly and was removed — the courses were
-mostly unwritten ("Planned"/"Writing now" placeholders), and having a page
-that only half-delivered on that promise did more harm than not having the
-page. `/roadmap/` stays: it still lays out the learning order stage by
-stage, but each stage now points only at cheatsheets, never at a course.
-Don't add a `courseId`/course link back onto a `Stage` in `roadmap/page.tsx`
-without also bringing the course content itself. Whether a course catalog
-comes back, and whether any of it is ever paid, are both real, separate
-decisions that haven't been made — do not reintroduce a waitlist, a "coming
-soon, join to hear first" framing, a `/tracks/` route, or any pricing/plan
-copy speculatively. When either decision is made, it'll be made explicitly,
-here.
+A course section is back as a **design preview**. An earlier catalog
+(`/tracks/`, a `COURSES` array in `site.ts`) was removed because the courses
+were mostly unwritten and a page that half-delivered on that promise did more
+harm than none. The current one was added deliberately to design the catalog,
+course page and player ahead of content, and it carries that honesty with it:
+
+- `/courses/`, `/courses/[slug]/` and `/courses/[slug]/learn/` render entirely
+  from `src/lib/courses.ts`. Every entry there is **sample data** (`sample:
+  true`) and the UI says so ("design preview" banners, "SAMPLE" badges). Don't
+  remove those labels from a course until its lessons actually exist.
+- The player is a mock: no media, "play" only advances the scrubber, progress
+  is in-memory. The CSP is `default-src 'self'`, so real video needs a
+  deliberate `public/_headers` change. `/learn/` is `noindex`.
+- "Enroll" just links to the player. There is no account, storage, form or
+  endpoint, so the no-attack-surface posture below still holds.
+- Statuses stay `'Writing now'` or `'Planned'`. Still no price, plan tier,
+  enrolment count, or "open"/"closed" language, and still no waitlist or
+  "coming soon, join to hear first" framing. Whether any of it is ever paid is
+  a separate decision that hasn't been made; it'll be made explicitly, here.
+- `/roadmap/` still points only at cheatsheets. Don't add a `courseId`/course
+  link onto a `Stage` in `roadmap/page.tsx` until that course's content exists.
+- `/tracks/` stays gone; courses live under `/courses/`.
 
 There is currently **no attack surface**: the site accepts no input anywhere.
 `worker/index.ts` does nothing but forward every request to the static
@@ -34,10 +43,12 @@ just unused right now.
 ## Where things live
 
 - `src/lib/site.ts` is the single source of truth for identity and nav.
-  Nothing else should hardcode a link or an email address. There is no
-  course/track list here anymore (see above) — if one comes back, keep the
-  same discipline: a status of `'Writing now'` or `'Planned'`, never a
-  price, a plan tier, or "open"/"closed" language that implies payment.
+  Nothing else should hardcode a link or an email address. The course list
+  is deliberately not here; it lives in `src/lib/courses.ts` (see above).
+- `src/lib/courses.ts` is the single source for courses: modules, lessons and
+  the duration/count helpers. Adding a course is a one-place edit, and
+  `generateStaticParams` on both course routes picks it up. Cover art is
+  generated from each course's `hue`, so there are no image assets to add.
 - `content/cheatsheets/` + `src/lib/cheatsheets.ts` are the cheatsheets
   pipeline, ported from `zephryx.in`'s: frontmatter-only `.md` files, each
   naming a PDF under `public/cheatsheets/`. The build throws if a cheatsheet's
