@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { SITE } from '@/lib/site';
 import { getCheatsheetCount } from '@/lib/cheatsheets';
+import { COURSES } from '@/lib/courses';
+import CourseCard from '@/components/CourseCard';
 
 const PRINCIPLES = [
   {
@@ -100,6 +102,32 @@ export default function Home() {
             <span aria-hidden>→</span>
           </Link>
         </div>
+      </section>
+
+      {/* ------------------------------------------------------------- courses */}
+      <section className="mx-auto max-w-6xl px-5 pt-16 sm:px-8">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <SectionHeading kicker="COURSES — DESIGN PREVIEW" title="Structured paths, in the works" />
+          <Link
+            href="/courses/"
+            className="inline-flex items-center gap-2 border border-line px-5 py-2.5 font-mono text-sm text-ink-dim transition-colors duration-300 hover:border-red-deep/60 hover:text-red-blood"
+          >
+            all courses
+            <span aria-hidden>→</span>
+          </Link>
+        </div>
+        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-ink-dim">
+          Sample entries showing how courses will look. The lessons are not written yet.
+        </p>
+        <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {COURSES.slice(0, 3).map((c) => (
+            <li key={c.slug} className="flex">
+              <div className="flex w-full flex-col [&>a]:flex-1">
+                <CourseCard course={c} />
+              </div>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* ---------------------------------------------------------- principles */}
