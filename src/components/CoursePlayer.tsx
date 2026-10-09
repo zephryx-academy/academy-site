@@ -186,7 +186,7 @@ export default function CoursePlayer({ course }: { course: Course }) {
 
         {/* ---------- curriculum column ---------- */}
         <aside aria-label="Course content" className="lg:sticky lg:top-24 lg:self-start">
-          <div className="panel flex max-h-[calc(100vh-7rem)] flex-col">
+          <div className="panel flex flex-col lg:max-h-[calc(100vh-7rem)]">
             <div className="border-b border-line p-4">
               <Link href={`/courses/${course.slug}/`} className="font-mono text-sm font-semibold text-ink hover:text-red-blood">
                 {course.title}
